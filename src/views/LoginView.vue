@@ -1,9 +1,5 @@
 <script setup lang="ts">
-interface User {
-  username: string
-  password: string
-}
-
+import type { User } from '@/types/user.ts'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
