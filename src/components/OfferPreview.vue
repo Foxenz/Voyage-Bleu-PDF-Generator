@@ -1,5 +1,6 @@
 <template>
   <div class="pdf-preview">
+    <img src="@/assets/images/logo.png" alt="Logo" class="logo" />
     <h3>{{ offer.destination }}</h3>
     <p><strong>Dates :</strong> {{ offer.dateStart }} au {{ offer.dateEnd }}</p>
     <p><strong>Agent :</strong> {{ selectedAgent?.name }} – {{ selectedAgent?.email }}</p>
@@ -31,7 +32,7 @@
         <strong>{{ hotel.name }}</strong> ({{ hotel.roomType }}) – {{ hotel.nights }} nuits –
         {{ hotel.halfBoard ? 'Demi-pension' : 'Sans pension' }}
       </p>
-      <img v-if="hotel.imageUrl" :src="hotel.imageUrl" alt="Image hôtel" style="max-width: 200px" />
+      <img v-if="hotel.imageUrl" :src="hotel.imageUrl" alt="Image hôtel" class="hotel-image" />
     </div>
 
     <p><strong>Montant total :</strong> {{ offer.totalAmount }} €</p>
@@ -58,33 +59,36 @@ const selectedAgent = computed(() => agents.find((agent) => agent.id === props.o
   color: #333;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: auto;
-}
 
-.pdf-preview h3 {
-  font-size: 24px;
-  margin-bottom: 10px;
-  border-bottom: 2px solid #42b983;
-  padding-bottom: 5px;
-}
+  .logo {
+    width: 200px;
+    margin-bottom: 20px;
+  }
 
-.pdf-preview h4 {
-  font-size: 18px;
-  margin-top: 20px;
-  margin-bottom: 5px;
-  color: #42b983;
-}
+  h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #42b983;
+    padding-bottom: 5px;
+  }
 
-.pdf-preview p {
-  margin: 5px 0;
-  font-size: 14px;
-}
+  h4 {
+    font-size: 22px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    color: #42b983;
+  }
 
-.pdf-preview img {
-  max-width: 100%;
-  max-height: 200px;
-  display: block;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  p {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+
+  .hotel-image {
+    max-width: 200px;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
 }
 </style>
