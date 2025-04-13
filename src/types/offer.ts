@@ -5,27 +5,26 @@ export interface Offer {
   dateEnd: string
   adults: number
   children: string[]
-  departureFlight: {
-    departure: string
-    arrival: string
-    baggage: string
-    company: string
-  }
-  returnFlight: {
-    departure: string
-    arrival: string
-    baggage: string
-    company: string
-  }
-  hotels: {
-    name: string
-    roomType: string
-    nights: number
-    halfBoard: boolean
-    image?: File | null
-    imageUrl?: string
-  }[]
+  departureFlight: Flight
+  returnFlight: Flight
+  hotels: Hotel[]
   totalAmount: string
   deposit: string
   reference: string
+}
+
+interface Flight {
+  departure: string
+  arrival: string
+  baggage: string
+  company: string
+}
+
+interface Hotel {
+  name: string
+  roomType: string
+  nights: number
+  halfBoard: boolean
+  image?: File | null
+  imageUrl?: string
 }
