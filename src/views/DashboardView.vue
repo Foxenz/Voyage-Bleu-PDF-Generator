@@ -26,7 +26,6 @@ const offer = reactive<Offer>({
   hotels: [],
   totalAmount: '',
   deposit: '',
-  reference: '',
 })
 </script>
 

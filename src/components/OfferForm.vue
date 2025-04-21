@@ -144,13 +144,6 @@ const onSubmit = async () => {
       </div>
     </section>
 
-    <section>
-      <div class="form-group">
-        <label>Référence</label>
-        <input v-model="form.reference" type="text" />
-      </div>
-    </section>
-
     <button class="submit-btn" type="submit">📄 Générer le PDF</button>
   </form>
 </template>

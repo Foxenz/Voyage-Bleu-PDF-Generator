@@ -10,7 +10,6 @@ export interface Offer {
   hotels: Hotel[]
   totalAmount: string
   deposit: string
-  reference: string
 }
 
 interface Flight {

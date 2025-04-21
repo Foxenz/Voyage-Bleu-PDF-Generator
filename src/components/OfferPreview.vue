@@ -127,6 +127,24 @@ const formatDateTime = (date: string): string => {
 
       <HotelCard v-for="(hotel, index) in offer.hotels" :key="index" :hotel="hotel" />
     </section>
+
+    <section class="price">
+      <div class="deposit-container">
+        <div class="icon-container">
+          <font-awesome-icon :icon="['fas', 'wallet']" class="icon" />
+          <p>Acompte</p>
+        </div>
+        <p>{{ offer.deposit }} €</p>
+      </div>
+
+      <div class="price-container">
+        <div class="icon-container">
+          <font-awesome-icon :icon="['fas', 'money-bill']" class="icon" />
+          <p>Prix Total</p>
+        </div>
+        <p>{{ offer.totalAmount }} €</p>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -282,6 +300,51 @@ const formatDateTime = (date: string): string => {
       width: 75%;
       margin-bottom: 10px;
       border-radius: 5px;
+
+      p {
+        color: white;
+        font-weight: 600;
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .icon {
+        color: white;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    .deposit-container,
+    .price-container {
+      width: 48%; /* Un petit espace entre les deux */
+    }
+
+    .deposit-container p:last-child,
+    .price-container p:last-child {
+      text-align: right;
+      margin: 0;
+    }
+
+    .deposit-container p:last-child {
+      text-align: left;
+    }
+
+    .icon-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #2e3092;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      width: 100%;
 
       p {
         color: white;
