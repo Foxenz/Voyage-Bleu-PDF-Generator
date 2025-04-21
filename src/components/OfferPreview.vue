@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HotelCard from '@/components/HotelCard.vue'
 import { agents } from '@/data/agent'
 import type { Offer } from '@/types/agent'
 import { computed } from 'vue'
@@ -117,12 +118,22 @@ const formatDateTime = (date: string): string => {
         </tbody>
       </table>
     </section>
+
+    <section class="hotels">
+      <div class="icon-container">
+        <font-awesome-icon :icon="['fas', 'bed']" class="icon" />
+        <p>Hôtel</p>
+      </div>
+
+      <HotelCard v-for="(hotel, index) in offer.hotels" :key="index" :hotel="hotel" />
+    </section>
   </div>
 </template>
 
 <style scoped>
 .pdf-preview {
   width: 210mm;
+  min-height: 297mm;
   padding: 20mm;
   height: 100%;
   background: white;
@@ -249,6 +260,39 @@ const formatDateTime = (date: string): string => {
       th:nth-child(4),
       td:nth-child(4) {
         width: 20%;
+      }
+    }
+  }
+
+  .hotels {
+    margin-top: 20px;
+
+    h4 {
+      margin-bottom: 10px;
+      color: #2e3092;
+    }
+
+    .icon-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #2e3092;
+      padding: 5px;
+      clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
+      width: 75%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+
+      p {
+        color: white;
+        font-weight: 600;
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .icon {
+        color: white;
+        font-size: 16px;
       }
     }
   }
