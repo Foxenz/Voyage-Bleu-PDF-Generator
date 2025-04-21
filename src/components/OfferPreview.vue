@@ -1,46 +1,3 @@
-<template>
-  <div class="pdf-preview">
-    <img src="@/assets/images/logo.png" alt="Logo" class="logo" />
-    <h3>{{ offer.destination }}</h3>
-    <p><strong>Dates :</strong> {{ offer.dateStart }} au {{ offer.dateEnd }}</p>
-    <p><strong>Agent :</strong> {{ selectedAgent?.name }} – {{ selectedAgent?.email }}</p>
-    <p><strong>Adultes :</strong> {{ offer.adults }}</p>
-    <p><strong>Enfants :</strong> {{ offer.children.join(', ') || 'Aucun' }}</p>
-    <h4>Vol Aller</h4>
-    <p>
-      Départ : {{ offer.departureFlight.departure }} / Arrivée :
-      {{ offer.departureFlight.arrival }}
-    </p>
-    <p>
-      Compagnie : {{ offer.departureFlight.company }} – Bagage :
-      {{ offer.departureFlight.baggage }}
-    </p>
-
-    <h4>Vol Retour</h4>
-    <p>
-      Départ : {{ offer.returnFlight.departure }} / Arrivée :
-      {{ offer.returnFlight.arrival }}
-    </p>
-    <p>
-      Compagnie : {{ offer.returnFlight.company }} – Bagage :
-      {{ offer.returnFlight.baggage }}
-    </p>
-
-    <h4>Hôtels</h4>
-    <div v-for="(hotel, index) in offer.hotels" :key="index">
-      <p>
-        <strong>{{ hotel.name }}</strong> ({{ hotel.roomType }}) – {{ hotel.nights }} nuits –
-        {{ hotel.halfBoard ? 'Demi-pension' : 'Sans pension' }}
-      </p>
-      <img v-if="hotel.imageUrl" :src="hotel.imageUrl" alt="Image hôtel" class="hotel-image" />
-    </div>
-
-    <p><strong>Montant total :</strong> {{ offer.totalAmount }} €</p>
-    <p><strong>Acompte :</strong> {{ offer.deposit }} €</p>
-    <p><strong>Référence :</strong> {{ offer.reference }}</p>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { agents } from '@/data/agent'
 import type { Offer } from '@/types/agent'
@@ -48,7 +5,120 @@ import { computed } from 'vue'
 
 const props = defineProps<{ offer: Offer }>()
 const selectedAgent = computed(() => agents.find((agent) => agent.id === props.offer.agentId))
+
+const formatDate = (date: string): string => {
+  const parsedDate = new Date(date)
+  if (isNaN(parsedDate.getTime())) {
+    return '...'
+  }
+  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
+  return parsedDate.toLocaleDateString('fr-FR', options)
+}
+
+const formatDateTime = (date: string): string => {
+  const parsedDate = new Date(date)
+  if (isNaN(parsedDate.getTime())) {
+    return '...'
+  }
+
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }
+
+  const hours = parsedDate.getHours().toString().padStart(2, '0')
+  const minutes = parsedDate.getMinutes().toString().padStart(2, '0')
+
+  return `${parsedDate.toLocaleDateString('fr-FR', dateOptions)} à ${hours}h${minutes}`
+}
 </script>
+
+<template>
+  <div class="pdf-preview">
+    <img src="@/assets/images/logo.png" alt="Logo" class="logo" />
+
+    <section class="general-info">
+      <div class="left-side">
+        <h3>{{ offer.destination }}</h3>
+
+        <div class="section-container">
+          <div class="icon-container">
+            <font-awesome-icon :icon="['fas', 'calendar-days']" class="icon" />
+            <p>Date</p>
+          </div>
+          <p>{{ formatDate(offer.dateStart) }} au {{ formatDate(offer.dateEnd) }}</p>
+        </div>
+
+        <div class="section-container">
+          <div class="icon-container">
+            <font-awesome-icon :icon="['fas', 'user-group']" class="icon" />
+            <p>Nombre de personne</p>
+          </div>
+          <p>{{ offer.adults }} adulte(s) - {{ offer.children.length }} enfant(s)</p>
+          <div v-if="offer.children.length > 0">
+            <p>Age de chaque enfant :</p>
+
+            <ul>
+              <li v-for="(child, index) in offer.children" :key="index">
+                {{ child ? child + ' ans' : '... ans' }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <img src="@/assets/images/agentCard.png" alt="agentCard" class="agent-card" />
+        <!--        <p><strong>Agent :</strong> {{ selectedAgent?.name }} – {{ selectedAgent?.email }}</p>-->
+      </div>
+    </section>
+
+    <section class="flight">
+      <h4>Vol Aller</h4>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Départ</th>
+            <th>Arrivée</th>
+            <th>Bagage</th>
+            <th>Compagnie</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ formatDateTime(offer.departureFlight.departure) }}</td>
+            <td>{{ formatDateTime(offer.departureFlight.arrival) }}</td>
+            <td>{{ offer.departureFlight.baggage }}</td>
+            <td>{{ offer.departureFlight.company }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Vol Retour</h4>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Départ</th>
+            <th>Arrivée</th>
+            <th>Bagage</th>
+            <th>Compagnie</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ formatDateTime(offer.returnFlight.departure) }}</td>
+            <td>{{ formatDateTime(offer.returnFlight.arrival) }}</td>
+            <td>{{ offer.returnFlight.baggage }}</td>
+            <td>{{ offer.returnFlight.company }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</template>
 
 <style scoped>
 .pdf-preview {
@@ -61,34 +131,126 @@ const selectedAgent = computed(() => agents.find((agent) => agent.id === props.o
   margin: auto;
 
   .logo {
-    width: 200px;
+    width: 275px;
     margin-bottom: 20px;
   }
 
-  h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #42b983;
-    padding-bottom: 5px;
+  .general-info {
+    display: flex;
+    justify-content: space-between;
+
+    .left-side {
+      flex: 2;
+
+      .section-container {
+        margin-bottom: 30px;
+
+        .icon-container {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          background-color: #2e3092;
+          padding: 5px;
+          clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
+          width: 75%;
+          margin-bottom: 10px;
+          border-radius: 5px;
+
+          p {
+            color: white;
+            font-weight: 600;
+            margin: 0;
+            font-size: 16px;
+          }
+
+          .icon {
+            color: white;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    .right-side {
+      flex: 1;
+    }
+
+    h3 {
+      margin-bottom: 20px;
+      color: #2e3092;
+    }
+
+    .agent-card {
+      width: 200px;
+      height: auto;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      li {
+        border: 1px solid #ccc;
+        background-color: #f0f0f0;
+        color: #333;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+    }
   }
 
-  h4 {
-    font-size: 22px;
+  .flight {
     margin-top: 20px;
-    margin-bottom: 5px;
-    color: #42b983;
-  }
 
-  p {
-    margin: 5px 0;
-    font-size: 16px;
-  }
+    h4 {
+      margin-bottom: 10px;
+      color: #2e3092;
+    }
 
-  .hotel-image {
-    max-width: 200px;
-    height: auto;
-    margin-top: 10px;
-    border-radius: 5px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+        word-break: break-word;
+        white-space: normal;
+        vertical-align: top;
+      }
+
+      th {
+        background-color: #2e3092;
+        color: white;
+        font-weight: 600;
+      }
+
+      td {
+        height: 40px;
+        vertical-align: middle;
+      }
+
+      th:nth-child(1),
+      td:nth-child(1),
+      th:nth-child(2),
+      td:nth-child(2) {
+        width: 30%;
+      }
+
+      th:nth-child(3),
+      td:nth-child(3),
+      th:nth-child(4),
+      td:nth-child(4) {
+        width: 20%;
+      }
+    }
   }
 }
 </style>
