@@ -54,7 +54,7 @@ const onSubmit = async () => {
       <h2>Informations générales</h2>
       <div class="form-group">
         <label>Destination</label>
-        <input v-model="form.destination" type="text" />
+        <input v-model="form.destination" type="text" placeholder="Titre de la destination" />
       </div>
 
       <div class="form-group">

@@ -12,6 +12,7 @@ const formatDate = (date: string): string => {
   if (isNaN(parsedDate.getTime())) {
     return '...'
   }
+
   const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }
   return parsedDate.toLocaleDateString('fr-FR', options)
 }
@@ -33,6 +34,10 @@ const formatDateTime = (date: string): string => {
 
   return `${parsedDate.toLocaleDateString('fr-FR', dateOptions)} à ${hours}h${minutes}`
 }
+
+const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(price)
+}
 </script>
 
 <template>
@@ -41,7 +46,7 @@ const formatDateTime = (date: string): string => {
 
     <section class="general-info">
       <div class="left-side">
-        <h3>{{ offer.destination }}</h3>
+        <h3>{{ offer.destination ? offer.destination : 'Entrez un titre de destination' }}</h3>
 
         <div class="section-container">
           <div class="icon-container">
@@ -70,8 +75,7 @@ const formatDateTime = (date: string): string => {
       </div>
 
       <div class="right-side">
-        <img src="@/assets/images/agentCard.png" alt="agentCard" class="agent-card" />
-        <!--        <p><strong>Agent :</strong> {{ selectedAgent?.name }} – {{ selectedAgent?.email }}</p>-->
+        <img src="../assets/images/agentCard.jpg" alt="agentCard" class="agent-card" />
       </div>
     </section>
 
@@ -91,8 +95,8 @@ const formatDateTime = (date: string): string => {
           <tr>
             <td>{{ formatDateTime(offer.departureFlight.departure) }}</td>
             <td>{{ formatDateTime(offer.departureFlight.arrival) }}</td>
-            <td>{{ offer.departureFlight.baggage }}</td>
-            <td>{{ offer.departureFlight.company }}</td>
+            <td>{{ offer.departureFlight.baggage || '...' }}</td>
+            <td>{{ offer.departureFlight.company || '...' }}</td>
           </tr>
         </tbody>
       </table>
@@ -112,8 +116,8 @@ const formatDateTime = (date: string): string => {
           <tr>
             <td>{{ formatDateTime(offer.returnFlight.departure) }}</td>
             <td>{{ formatDateTime(offer.returnFlight.arrival) }}</td>
-            <td>{{ offer.returnFlight.baggage }}</td>
-            <td>{{ offer.returnFlight.company }}</td>
+            <td>{{ offer.returnFlight.baggage || '...' }}</td>
+            <td>{{ offer.returnFlight.company || '...' }}</td>
           </tr>
         </tbody>
       </table>
@@ -134,7 +138,7 @@ const formatDateTime = (date: string): string => {
           <font-awesome-icon :icon="['fas', 'wallet']" class="icon" />
           <p>Acompte</p>
         </div>
-        <p>{{ offer.deposit }} €</p>
+        <p>{{ formatPrice(offer.deposit) }}</p>
       </div>
 
       <div class="price-container">
@@ -142,7 +146,7 @@ const formatDateTime = (date: string): string => {
           <font-awesome-icon :icon="['fas', 'money-bill']" class="icon" />
           <p>Prix Total</p>
         </div>
-        <p>{{ offer.totalAmount }} €</p>
+        <p>{{ formatPrice(offer.totalAmount) }}</p>
       </div>
     </section>
   </div>
@@ -153,7 +157,6 @@ const formatDateTime = (date: string): string => {
   width: 210mm;
   min-height: 297mm;
   padding: 20mm;
-  height: 100%;
   background: white;
   color: #333;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -210,8 +213,9 @@ const formatDateTime = (date: string): string => {
     }
 
     .agent-card {
-      width: 200px;
+      width: 225px;
       height: auto;
+      border-radius: 20px;
     }
 
     ul {
@@ -323,7 +327,7 @@ const formatDateTime = (date: string): string => {
 
     .deposit-container,
     .price-container {
-      width: 48%; /* Un petit espace entre les deux */
+      width: 48%;
     }
 
     .deposit-container p:last-child,

@@ -16,7 +16,7 @@ const props = defineProps<{
     />
     <div class="hotel-info">
       <h4>{{ hotel.name }}</h4>
-      <p>Type de chambre : {{ hotel.roomType }}</p>
+      <p>Type de chambre : {{ hotel.roomType || '...' }}</p>
       <p>Nombre de nuits : {{ hotel.nights }}</p>
       <p>Demi-pension : {{ hotel.halfBoard ? 'Oui' : 'Non' }}</p>
     </div>

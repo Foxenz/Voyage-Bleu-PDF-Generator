@@ -9,7 +9,7 @@ const offer = reactive<Offer>({
   agentId: '',
   dateStart: '',
   dateEnd: '',
-  adults: 1,
+  adults: 0,
   children: [],
   departureFlight: {
     departure: '',
@@ -23,7 +23,16 @@ const offer = reactive<Offer>({
     baggage: '',
     company: '',
   },
-  hotels: [],
+  hotels: [
+    {
+      name: '',
+      roomType: '',
+      nights: 0,
+      halfBoard: false,
+      image: null,
+      imageUrl: undefined,
+    },
+  ],
   totalAmount: '',
   deposit: '',
 })
