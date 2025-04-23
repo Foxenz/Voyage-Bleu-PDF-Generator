@@ -28,7 +28,7 @@ const offer = reactive<Offer>({
       name: '',
       roomType: '',
       nights: 0,
-      halfBoard: false,
+      boardType: '',
       image: null,
       imageUrl: undefined,
     },

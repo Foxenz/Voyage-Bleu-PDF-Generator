@@ -23,7 +23,17 @@ interface Hotel {
   name: string
   roomType: string
   nights: number
-  halfBoard: boolean
+  boardType: boardType
   image?: File | null
   imageUrl?: string
+}
+
+export type boardType = 'allInclusive' | 'breakfast' | 'halfBoard' | 'fullBoard' | 'selfCatering'
+
+export const boardTypeTranslations: Record<boardType, string> = {
+  selfCatering: 'Logement seul',
+  breakfast: 'Petit-déjeuner',
+  halfBoard: 'Demi-pension',
+  fullBoard: 'Pension complète',
+  allInclusive: 'Tout inclus',
 }

@@ -3,6 +3,7 @@ import { agents } from '@/data/agent'
 import type { Offer } from '@/types/agent'
 import html2pdf from 'html2pdf.js'
 import { reactive } from 'vue'
+import { boardTypeTranslations } from '@/types/offer'
 
 const emit = defineEmits(['update'])
 const props = defineProps<{ offer: Offer }>()
@@ -16,7 +17,7 @@ const addHotel = () => {
     name: '',
     roomType: '',
     nights: 1,
-    halfBoard: false,
+    boardType: '',
     image: null,
     imageUrl: '',
   })
@@ -30,6 +31,14 @@ const handleHotelImage = (e: Event, index: number) => {
     form.hotels[index].imageUrl = URL.createObjectURL(file)
   }
 }
+
+const boardTypes: boardType[] = [
+  'selfCatering',
+  'breakfast',
+  'halfBoard',
+  'fullBoard',
+  'allInclusive',
+]
 
 const onSubmit = async () => {
   emit('update')
@@ -122,7 +131,12 @@ const onSubmit = async () => {
           <input v-model="hotel.name" type="text" placeholder="Nom de l'hôtel" />
           <input v-model="hotel.roomType" type="text" placeholder="Type de chambre" />
           <input v-model="hotel.nights" type="number" placeholder="Nombre de nuits" />
-          <label><input type="checkbox" v-model="hotel.halfBoard" /> Demi-pension</label>
+          <select v-model="hotel.boardType">
+            <option disabled value="">Sélectionner le type de pension</option>
+            <option v-for="type in boardTypes" :key="type" :value="type">
+              {{ boardTypeTranslations[type] }}
+            </option>
+          </select>
           <input type="file" @change="(e) => handleHotelImage(e, index)" />
           <button type="button" class="remove" @click="removeHotel(index)">
             Supprimer l'hôtel
@@ -177,6 +191,14 @@ const onSubmit = async () => {
       font-size: 1rem;
     }
 
+    select {
+      appearance: none; /* Supprime le style par défaut pour personnaliser */
+      background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>')
+        no-repeat right 10px center;
+      background-size: 18px;
+      cursor: pointer;
+    }
+
     input[type='file'] {
       padding: 4px;
     }
@@ -191,7 +213,7 @@ const onSubmit = async () => {
     }
 
     .add {
-      background-color: #3498db;
+      background-color: #2e3092;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -200,7 +222,7 @@ const onSubmit = async () => {
       margin-top: 10px;
 
       &:hover {
-        background-color: #2980b9;
+        background-color: #11138d;
       }
     }
 

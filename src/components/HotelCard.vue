@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import defaultImage from '@/assets/images/hotelPlaceholder.png'
 import type { Hotel } from '@/types/agent'
+import { boardTypeTranslations } from '@/types/offer'
 
 const props = defineProps<{
   hotel: Hotel
@@ -15,10 +16,10 @@ const props = defineProps<{
       class="hotel-image"
     />
     <div class="hotel-info">
-      <h4>{{ hotel.name }}</h4>
+      <h4>{{ hotel.name || "Entrez le nom de l'hôtel" }}</h4>
       <p>Type de chambre : {{ hotel.roomType || '...' }}</p>
       <p>Nombre de nuits : {{ hotel.nights }}</p>
-      <p>Demi-pension : {{ hotel.halfBoard ? 'Oui' : 'Non' }}</p>
+      <p>Type de pension : {{ boardTypeTranslations[props.hotel.boardType] }}</p>
     </div>
   </div>
 </template>
