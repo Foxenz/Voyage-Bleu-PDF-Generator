@@ -1,7 +1,9 @@
 import type { Agent } from '@/types/agent.ts'
 
 export const agents: Agent[] = [
-  { id: '1', name: 'Julie Martin', phone: '0601020304', email: 'julie@agence.com' },
-  { id: '2', name: 'Marc Dupont', phone: '0611223344', email: 'marc@agence.com' },
-  { id: '3', name: 'Emma Franken', phone: '042359991', email: 'emma@voyagebleu.be' },
+  { id: '1', name: 'Ibrahim', phone: '04 235 99 91', email: 'info@voyagebleu.be' },
+  { id: '2', name: 'Fanny', phone: '04 235 99 91', email: 'fanny@voyagebleu.be' },
+  { id: '3', name: 'Emma', phone: '04 235 99 91', email: 'emma@voyagebleu.be' },
+  { id: '4', name: 'Gaelle', phone: '04 235 99 91', email: 'gaelle@voyagebleu.be' },
+  { id: '5', name: 'Lauryne', phone: '04 235 99 91', email: 'lauryne@voyagebleu.be' },
 ]
