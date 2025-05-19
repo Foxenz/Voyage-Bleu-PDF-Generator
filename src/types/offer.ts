@@ -5,8 +5,8 @@ export interface Offer {
   dateEnd: string
   adults: number
   children: string[]
-  departureFlight: Flight
-  returnFlight: Flight
+  departureFlights: Flight[]
+  returnFlights: Flight[]
   hotels: Hotel[]
   totalAmount: string
   deposit: string

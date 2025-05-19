@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { agents } from '@/data/agent'
-import type { Offer } from '@/types/agent'
 import html2pdf from 'html2pdf.js'
 import { reactive } from 'vue'
-import { type boardType, boardTypeTranslations } from '@/types/offer'
+import { type boardType, boardTypeTranslations, type Offer } from '@/types/offer'
 
 const emit = defineEmits(['update'])
 const props = defineProps<{ offer: Offer }>()
@@ -11,6 +10,29 @@ const form = reactive(props.offer)
 
 const addChild = () => form.children.push('')
 const removeChild = (index: number) => form.children.splice(index, 1)
+
+const addDepartureFlight = () => {
+  form.departureFlights.push({
+    departure: '',
+    arrival: '',
+    baggage: '',
+    company: '',
+  })
+}
+const removeDepartureFlight = (index: number) => {
+  if (form.departureFlights.length > 1) form.departureFlights.splice(index, 1)
+}
+const addReturnFlight = () => {
+  form.returnFlights.push({
+    departure: '',
+    arrival: '',
+    baggage: '',
+    company: '',
+  })
+}
+const removeReturnFlight = (index: number) => {
+  if (form.returnFlights.length > 1) form.returnFlights.splice(index, 1)
+}
 
 const addHotel = () => {
   form.hotels.push({
@@ -103,24 +125,42 @@ const onSubmit = async () => {
     </section>
 
     <section>
-      <h2>Vol aller</h2>
+      <h2>Vols aller</h2>
       <div class="form-group">
-        <input
-          v-model="form.departureFlight.departure"
-          type="datetime-local"
-          placeholder="Départ"
-        />
-        <input v-model="form.departureFlight.arrival" type="datetime-local" placeholder="Arrivée" />
-        <input v-model="form.departureFlight.baggage" type="text" placeholder="Bagage" />
-        <input v-model="form.departureFlight.company" type="text" placeholder="Compagnie" />
+        <div v-for="(flight, index) in form.departureFlights" :key="index" class="form-group">
+          <input v-model="flight.departure" type="datetime-local" placeholder="Départ" />
+          <input v-model="flight.arrival" type="datetime-local" placeholder="Arrivée" />
+          <input v-model="flight.baggage" type="text" placeholder="Bagage" />
+          <input v-model="flight.company" type="text" placeholder="Compagnie" />
+          <button
+            type="button"
+            class="remove"
+            @click="removeDepartureFlight(index)"
+            v-if="form.departureFlights.length > 1"
+          >
+            Supprimer le vol
+          </button>
+        </div>
+        <button type="button" class="add" @click="addDepartureFlight">Ajouter un vol</button>
       </div>
 
-      <h2>Vol retour</h2>
+      <h2>Vols retour</h2>
       <div class="form-group">
-        <input v-model="form.returnFlight.departure" type="datetime-local" placeholder="Départ" />
-        <input v-model="form.returnFlight.arrival" type="datetime-local" placeholder="Arrivée" />
-        <input v-model="form.returnFlight.baggage" type="text" placeholder="Bagage" />
-        <input v-model="form.returnFlight.company" type="text" placeholder="Compagnie" />
+        <div v-for="(flight, index) in form.returnFlights" :key="index" class="form-group">
+          <input v-model="flight.departure" type="datetime-local" placeholder="Départ" />
+          <input v-model="flight.arrival" type="datetime-local" placeholder="Arrivée" />
+          <input v-model="flight.baggage" type="text" placeholder="Bagage" />
+          <input v-model="flight.company" type="text" placeholder="Compagnie" />
+          <button
+            type="button"
+            class="remove"
+            @click="removeReturnFlight(index)"
+            v-if="form.returnFlights.length > 1"
+          >
+            Supprimer le vol
+          </button>
+        </div>
+        <button type="button" class="add" @click="addReturnFlight">Ajouter un vol</button>
       </div>
     </section>
 

@@ -11,18 +11,22 @@ const offer = reactive<Offer>({
   dateEnd: '',
   adults: 0,
   children: [],
-  departureFlight: {
-    departure: '',
-    arrival: '',
-    baggage: '',
-    company: '',
-  },
-  returnFlight: {
-    departure: '',
-    arrival: '',
-    baggage: '',
-    company: '',
-  },
+  departureFlights: [
+    {
+      departure: '',
+      arrival: '',
+      baggage: '',
+      company: '',
+    },
+  ],
+  returnFlights: [
+    {
+      departure: '',
+      arrival: '',
+      baggage: '',
+      company: '',
+    },
+  ],
   hotels: [
     {
       name: '',

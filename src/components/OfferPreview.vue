@@ -78,8 +78,7 @@ const selectedAgent: ComputedRef<Agent> = computed(
     </section>
 
     <section class="flight">
-      <h4>Vol Aller</h4>
-
+      <h4>Vols Aller</h4>
       <table>
         <thead>
           <tr>
@@ -90,17 +89,16 @@ const selectedAgent: ComputedRef<Agent> = computed(
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{ formatDateTime(offer.departureFlight.departure) }}</td>
-            <td>{{ formatDateTime(offer.departureFlight.arrival) }}</td>
-            <td>{{ offer.departureFlight.baggage || '...' }}</td>
-            <td>{{ offer.departureFlight.company || '...' }}</td>
+          <tr v-for="(flight, index) in offer.departureFlights" :key="index">
+            <td>{{ formatDateTime(flight.departure) }}</td>
+            <td>{{ formatDateTime(flight.arrival) }}</td>
+            <td>{{ flight.baggage || '...' }}</td>
+            <td>{{ flight.company || '...' }}</td>
           </tr>
         </tbody>
       </table>
 
-      <h4>Vol Retour</h4>
-
+      <h4>Vols Retour</h4>
       <table>
         <thead>
           <tr>
@@ -111,11 +109,11 @@ const selectedAgent: ComputedRef<Agent> = computed(
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{ formatDateTime(offer.returnFlight.departure) }}</td>
-            <td>{{ formatDateTime(offer.returnFlight.arrival) }}</td>
-            <td>{{ offer.returnFlight.baggage || '...' }}</td>
-            <td>{{ offer.returnFlight.company || '...' }}</td>
+          <tr v-for="(flight, index) in offer.returnFlights" :key="index">
+            <td>{{ formatDateTime(flight.departure) }}</td>
+            <td>{{ formatDateTime(flight.arrival) }}</td>
+            <td>{{ flight.baggage || '...' }}</td>
+            <td>{{ flight.company || '...' }}</td>
           </tr>
         </tbody>
       </table>
