@@ -8,6 +8,8 @@ import {
   faMoneyBill,
   faUserGroup,
   faWallet,
+  faEnvelope,
+  faPhone,
 } from '@fortawesome/free-solid-svg-icons'
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -17,7 +19,7 @@ import App from './App.vue'
 import router from './router'
 
 /* add icons to the library */
-library.add(faCalendarDays, faUserGroup, faBed, faMoneyBill, faWallet)
+library.add(faCalendarDays, faUserGroup, faBed, faMoneyBill, faWallet, faEnvelope, faPhone)
 
 const app = createApp(App)
 

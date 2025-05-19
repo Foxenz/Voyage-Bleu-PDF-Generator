@@ -3,7 +3,7 @@ import { agents } from '@/data/agent'
 import type { Offer } from '@/types/agent'
 import html2pdf from 'html2pdf.js'
 import { reactive } from 'vue'
-import { boardTypeTranslations } from '@/types/offer'
+import { type boardType, boardTypeTranslations } from '@/types/offer'
 
 const emit = defineEmits(['update'])
 const props = defineProps<{ offer: Offer }>()
@@ -192,7 +192,7 @@ const onSubmit = async () => {
     }
 
     select {
-      appearance: none; /* Supprime le style par défaut pour personnaliser */
+      appearance: none;
       background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>')
         no-repeat right 10px center;
       background-size: 18px;

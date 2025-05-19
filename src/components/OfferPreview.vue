@@ -42,8 +42,6 @@ const formatPrice = (price: number): string => {
 
 <template>
   <div class="pdf-preview">
-    <img src="@/assets/images/logo.png" alt="Logo" class="logo" />
-
     <section class="general-info">
       <div class="left-side">
         <h3>{{ offer.destination ? offer.destination : 'Entrez un titre de destination' }}</h3>
@@ -75,7 +73,42 @@ const formatPrice = (price: number): string => {
       </div>
 
       <div class="right-side">
-        <img src="../assets/images/agentCard.jpg" alt="agentCard" class="agent-card" />
+        <div class="circle-profil">
+          <div class="agent">
+            <p>Agent en charge :</p>
+            <p class="name">
+              {{
+                agents.find((agent) => agent.id === offer.agentId)?.name
+                  ? agents.find((agent) => agent.id === offer.agentId)?.name
+                  : "Nom de l'agent"
+              }}
+            </p>
+
+            <div class="icon-text">
+              <p class="phone">
+                {{
+                  agents.find((agent) => agent.id === offer.agentId)?.phone
+                    ? agents.find((agent) => agent.id === offer.agentId)?.phone
+                    : "Numéro de de l'agent"
+                }}
+              </p>
+              <font-awesome-icon :icon="['fas', 'phone']" class="icon" />
+            </div>
+
+            <div class="icon-text">
+              <p class="email">
+                {{
+                  agents.find((agent) => agent.id === offer.agentId)?.email
+                    ? agents.find((agent) => agent.id === offer.agentId)?.email
+                    : "Email de l'agent"
+                }}
+              </p>
+              <font-awesome-icon :icon="['fas', 'envelope']" class="icon" />
+            </div>
+
+            <hr class="underline" />
+          </div>
+        </div>
       </div>
     </section>
 
@@ -157,19 +190,23 @@ const formatPrice = (price: number): string => {
   width: 210mm;
   min-height: 297mm;
   padding: 20mm;
-  background: white;
   color: #333;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: auto;
-
-  .logo {
-    width: 275px;
-    margin-bottom: 20px;
-  }
+  background-image: url('src/assets/images/entete.png');
+  background-size: cover;
 
   .general-info {
+    margin-top: 40px;
     display: flex;
     justify-content: space-between;
+
+    h3 {
+      margin-bottom: 20px;
+      color: #2e3092;
+      font-weight: 600;
+      font-size: 24px;
+    }
 
     .left-side {
       flex: 2;
@@ -183,7 +220,7 @@ const formatPrice = (price: number): string => {
           gap: 10px;
           background-color: #2e3092;
           padding: 5px;
-          clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
+          //clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
           width: 75%;
           margin-bottom: 10px;
           border-radius: 5px;
@@ -205,17 +242,55 @@ const formatPrice = (price: number): string => {
 
     .right-side {
       flex: 1;
-    }
+      display: flex;
+      align-items: center;
 
-    h3 {
-      margin-bottom: 20px;
-      color: #2e3092;
-    }
+      .circle-profil {
+        background-color: #bfe5e3;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        padding: 20px;
+        width: 100%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
-    .agent-card {
-      width: 225px;
-      height: auto;
-      border-radius: 20px;
+        .agent {
+          display: flex;
+          flex-direction: column;
+          align-items: self-end;
+          justify-content: center;
+          gap: 5px;
+
+          .name {
+            font-weight: 600;
+            margin: 0;
+            font-size: 16px;
+          }
+
+          .icon-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+
+            .icon {
+              color: black;
+              font-size: 16px;
+            }
+
+            .email {
+              border-bottom: 2px solid white;
+              padding-bottom: 3px;
+            }
+          }
+        }
+
+        p {
+          color: black;
+          margin: 0;
+          font-size: 14px;
+          text-align: center;
+        }
+      }
     }
 
     ul {
@@ -300,7 +375,7 @@ const formatPrice = (price: number): string => {
       gap: 10px;
       background-color: #2e3092;
       padding: 5px;
-      clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
+      //clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
       width: 75%;
       margin-bottom: 10px;
       border-radius: 5px;
