@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import HotelCard from '@/components/HotelCard.vue'
 import { agents } from '@/data/agent'
-import type { Offer } from '@/types/agent'
-import { computed } from 'vue'
+import type { Agent, Offer } from '@/types/agent'
+import { computed, type ComputedRef } from 'vue'
 
 const props = defineProps<{ offer: Offer }>()
-const selectedAgent = computed(() => agents.find((agent) => agent.id === props.offer.agentId))
+const selectedAgent: ComputedRef<Agent> = computed(
+  () =>
+    agents.find((agent) => agent.id === props.offer.agentId) || {
+      id: '0',
+      name: "Nom de l'agent",
+      phone: "Numéro de de l'agent",
+      email: "Email de l'agent",
+    },
+)
 
 const formatDate = (date: string): string => {
   const parsedDate = new Date(date)
@@ -60,7 +68,7 @@ const formatPrice = (price: number): string => {
             <p>Nombre de personne</p>
           </div>
           <p>{{ offer.adults }} adulte(s) - {{ offer.children.length }} enfant(s)</p>
-          <div v-if="offer.children.length > 0">
+          <div class="child-container" v-if="offer.children.length > 0">
             <p>Age de chaque enfant :</p>
 
             <ul>
@@ -77,31 +85,19 @@ const formatPrice = (price: number): string => {
           <div class="agent">
             <p>Agent en charge :</p>
             <p class="name">
-              {{
-                agents.find((agent) => agent.id === offer.agentId)?.name
-                  ? agents.find((agent) => agent.id === offer.agentId)?.name
-                  : "Nom de l'agent"
-              }}
+              {{ selectedAgent.name }}
             </p>
 
             <div class="icon-text">
               <p class="phone">
-                {{
-                  agents.find((agent) => agent.id === offer.agentId)?.phone
-                    ? agents.find((agent) => agent.id === offer.agentId)?.phone
-                    : "Numéro de de l'agent"
-                }}
+                {{ selectedAgent.phone }}
               </p>
               <font-awesome-icon :icon="['fas', 'phone']" class="icon" />
             </div>
 
             <div class="icon-text">
               <p class="email">
-                {{
-                  agents.find((agent) => agent.id === offer.agentId)?.email
-                    ? agents.find((agent) => agent.id === offer.agentId)?.email
-                    : "Email de l'agent"
-                }}
+                {{ selectedAgent.email }}
               </p>
               <font-awesome-icon :icon="['fas', 'envelope']" class="icon" />
             </div>
@@ -220,7 +216,6 @@ const formatPrice = (price: number): string => {
           gap: 10px;
           background-color: #2e3092;
           padding: 5px;
-          //clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
           width: 75%;
           margin-bottom: 10px;
           border-radius: 5px;
@@ -293,27 +288,30 @@ const formatPrice = (price: number): string => {
       }
     }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    .child-container {
+      margin-top: 10px;
 
-      li {
-        border: 1px solid #ccc;
-        background-color: #f0f0f0;
-        color: #333;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
+      ul {
+        margin-top: 6px;
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        li {
+          border: 1px solid #ccc;
+          background-color: #bfe5e3;
+          color: #333;
+          padding: 5px 10px;
+          border-radius: 5px;
+          font-size: 14px;
+        }
       }
     }
   }
 
   .flight {
-    margin-top: 20px;
-
     h4 {
       margin-bottom: 10px;
       color: #2e3092;
@@ -375,7 +373,6 @@ const formatPrice = (price: number): string => {
       gap: 10px;
       background-color: #2e3092;
       padding: 5px;
-      //clip-path: polygon(75% 0%, 85% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
       width: 75%;
       margin-bottom: 10px;
       border-radius: 5px;
