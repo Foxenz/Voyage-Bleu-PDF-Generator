@@ -156,8 +156,6 @@ const selectedAgent: ComputedRef<Agent> = computed(
   color: #333;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: auto;
-  background-image: url('src/assets/images/entete.png');
-  background-size: cover;
 
   .general-info {
     margin-top: 40px;

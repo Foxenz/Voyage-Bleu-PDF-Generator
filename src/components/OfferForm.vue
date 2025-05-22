@@ -62,17 +62,88 @@ const boardTypes: boardType[] = [
   'allInclusive',
 ]
 
+const getBase64ImageWithDimensions = async (
+  url: string,
+): Promise<{
+  src: string
+  width: number
+  height: number
+}> => {
+  const response = await fetch(url)
+  const blob = await response.blob()
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const img = new Image()
+      img.onload = () => {
+        resolve({
+          src: reader.result as string,
+          width: img.width,
+          height: img.height,
+        })
+      }
+      img.onerror = reject
+      img.src = reader.result as string
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
+}
+
 const onSubmit = async () => {
   emit('update')
+
+  // Chemin vers votre image
+  const header = new URL('../assets/images/header.PNG', import.meta.url).href
+  const footer = new URL('../assets/images/footer.PNG', import.meta.url).href
+
+  const headerImg = await getBase64ImageWithDimensions(header)
+  const footerImg = await getBase64ImageWithDimensions(footer)
+
   const opt = {
-    margin: 10,
     filename: `${form.destination || 'offre-voyage'}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    html2canvas: {
+      scale: 2,
+    },
+    jsPDF: {
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'portrait',
+    },
   }
+
   try {
-    await html2pdf().from(document.querySelector('.pdf-preview')).set(opt).save()
+    const element = document.querySelector('.pdf-preview')
+
+    await html2pdf()
+      .from(element)
+      .set(opt)
+      .toPdf()
+      .get('pdf')
+      .then((pdf) => {
+        const totalPages = pdf.internal.getNumberOfPages()
+        const pageWidth = pdf.internal.pageSize.getWidth()
+        const headerHeight = (headerImg.height / headerImg.width) * pageWidth
+        const footerHeight = (footerImg.height / footerImg.width) * pageWidth
+
+        for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i)
+
+          pdf.addImage(headerImg.src, 'PNG', 0, 0, pageWidth, headerHeight)
+
+          pdf.addImage(
+            footerImg.src,
+            'PNG',
+            0,
+            pdf.internal.pageSize.getHeight() - footerHeight,
+            pageWidth,
+            footerHeight,
+          )
+        }
+      })
+      .save()
   } catch (error) {
     console.error('Erreur génération PDF:', error)
   }
