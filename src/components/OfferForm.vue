@@ -39,7 +39,7 @@ const addHotel = () => {
     name: '',
     roomType: '',
     nights: 1,
-    boardType: '',
+    boardType: 'null',
     image: null,
     imageUrl: '',
   })

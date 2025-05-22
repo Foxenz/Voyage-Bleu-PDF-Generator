@@ -28,9 +28,16 @@ interface Hotel {
   imageUrl?: string
 }
 
-export type boardType = 'allInclusive' | 'breakfast' | 'halfBoard' | 'fullBoard' | 'selfCatering'
+export type boardType =
+  | 'null'
+  | 'allInclusive'
+  | 'breakfast'
+  | 'halfBoard'
+  | 'fullBoard'
+  | 'selfCatering'
 
 export const boardTypeTranslations: Record<boardType, string> = {
+  null: 'Non spécifié',
   selfCatering: 'Logement seul',
   breakfast: 'Petit-déjeuner',
   halfBoard: 'Demi-pension',
