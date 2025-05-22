@@ -8,8 +8,8 @@ export interface Offer {
   departureFlights: Flight[]
   returnFlights: Flight[]
   hotels: Hotel[]
-  totalAmount: string
-  deposit: string
+  totalAmount: number
+  deposit: number
 }
 
 interface Flight {

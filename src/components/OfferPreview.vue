@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import HotelCard from '@/components/HotelCard.vue'
 import { agents } from '@/data/agent'
-import type { Agent, Offer } from '@/types/agent'
+import type { Agent } from '@/types/agent'
+import type { Offer } from '@/types/offer'
 import { computed, type ComputedRef } from 'vue'
 import { formatDate, formatDateTime, formatPrice } from '@/utils/format'
 
